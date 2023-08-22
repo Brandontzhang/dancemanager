@@ -2,18 +2,23 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { typeDefs } from "./schema.js";
 import { resolvers } from "./resolvers.js";
-import DBConnection from './datasources/db.js'
+import { PGDBDataSource } from "./datasources/db.js";
+import { config } from "dotenv";
 
 async function startApolloServer() {
-  const server = new ApolloServer({ typeDefs, resolvers });
+  config();
+  const server = new ApolloServer({ 
+    typeDefs, 
+    resolvers,
+  });
   const { url } = await startStandaloneServer(server, {
     context: async () => {
-      // const { cache } = server; used for API caching
+      const { cache } = server;
       // TODO: Look into caching later (Redis)
       return {
         dataSources: {
-            DBConnection: DBConnection
-        },
+          db: new PGDBDataSource(),
+        }
       };
     },
   });

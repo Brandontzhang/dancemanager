@@ -63,4 +63,4 @@ export const typeDefs = gql`
         cutoff: Int
         judges: [Judge]
     }
-`
+`;
