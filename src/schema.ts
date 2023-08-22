@@ -2,11 +2,8 @@ import gql from "graphql-tag"
 
 export const typeDefs = gql`
     type Query {
-    
-    }
-
-    type Mutation {
-    
+        "Get the list of competitions"
+        competitions: [Competition]!
     }
 
     type Admin {
@@ -56,14 +53,14 @@ export const typeDefs = gql`
     type Judge {
         id: ID!
         name: String!
-        number: Integer
+        number: Int
     }
 
     type Round {
         id: ID!
         contestants: [Contestant]!
         heats: [Heat!]!
-        cutoff: Integer
+        cutoff: Int
         judges: [Judge]
     }
 `
