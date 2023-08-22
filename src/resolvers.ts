@@ -1,11 +1,24 @@
 import { Resolvers } from "./types";
-import { CompetitionModel } from './models'
 
 export const resolvers: Resolvers = {
-    Query:  {
+    Query: {
         competitions: async (_, __, { dataSources }) => {
-            const data : CompetitionModel[] = await dataSources.db.getCompetitions();
-            return [];
+            return dataSources.db.getCompetitions();
         },
+    },
+
+    Competition: {
+        judges: async ({ id }, _, { dataSources }) => {
+            return dataSources.db.getJudgesByCompetitionId(id);
+        },
+        contestants: async ({ id }, _, { dataSources }) => {
+            return dataSources.db.getContestantsByCompetitionId(id);
+        },
+        events: async({ id }, _, { dataSources }) => {
+            return dataSources.db.getEventsByCompetitionId(id);
+        },
+        eventQueue: async ({ id }, _, { dataSources }) => {
+            return dataSources.db.getEventQueueByCompetitionId(id);
+        }
     }
 }

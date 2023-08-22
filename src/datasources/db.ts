@@ -22,10 +22,29 @@ export class PGDBDataSource {
         return connection;
     }
 
-    async getCompetitions() : Promise<CompetitionModel[]> {
-        const competitions = await this.dbConnection.query('SELECT * FROM competition');
+    async getCompetitions() {
+        const data = await this.dbConnection.query(`SELECT * FROM competition`);
+        return data.rows;
+    }
 
-        return competitions;
+    async getJudgesByCompetitionId(compId : string) {
+        const data = await this.dbConnection.query(`SELECT * FROM JUDGE WHERE COMPETITION=${compId}`);
+        return data.rows;
+    }
+
+    async getContestantsByCompetitionId(compId : string) {
+        const data = await this.dbConnection.query(`SELECT * FROM CONTESTANT WHERE COMPETITION=${compId}`);
+        return data.rows;
+    }
+
+    async getEventsByCompetitionId(compId : string) {
+        const data = await this.dbConnection.query(`SELECT * FROM EVENT WHERE COMPETITION=${compId}`);
+        return data.rows;
+    }
+
+    async getEventQueueByCompetitionId(compId : string) {
+        const data = await this.dbConnection.query(`SELECT * FROM EVENTQUEUE WHERE COMPETITION=${compId}`);
+        return data.rows;
     }
 
 }

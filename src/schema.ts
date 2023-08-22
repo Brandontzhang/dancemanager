@@ -18,7 +18,6 @@ export const typeDefs = gql`
         date: String
         judges: [Judge]!
         contestants: [Contestant]!
-        currentEvent: Event
         events: [Event]!
         eventQueue: [Event]!
     }
