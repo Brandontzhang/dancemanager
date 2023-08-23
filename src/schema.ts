@@ -1,16 +1,22 @@
 import gql from "graphql-tag"
 
+// TODO: Separate out, potentially using gql fragments
+
 export const typeDefs = gql`
     type Query {
-        "Query for an admin account with username and password information"
-        loginAdmin(username: String, password: String): Admin
         "Get the list of competitions"
         competitions: [Competition]!
     }
 
     type Mutation {
+        "Query for an admin account with username and password information"
+        loginAdmin(username: String!, password: String!): String!
+        "Query for judge accounts logging in"
+        loginJudge(username: String!, password: String!, competitionId: String!): String!
         "Create an admin account (for super admin use)"
-        createAdmin(username: String, password: String, email: String): createAdminResponse!
+        createAdmin(username: String!, password: String!, email: String!): createAdminResponse!
+        "Create judge accounts for a competition providing the names and password"
+        createJudges(usernames: [String!]!, password: String!, competitionId: String!): createJudgesResponse!
     }
 
     "Response containing details from a request creating a new admin account"
@@ -23,6 +29,18 @@ export const typeDefs = gql`
         message: String!
         "Newly create admin account information"
         admin: Admin
+    }
+
+    "Response containing details from a request creating a new judge accounts for a competition"
+    type createJudgesResponse {
+        "Similar to HTTP status code, represents the status of the mutation"
+        code: String!
+        "Indicates whether the mutation was successful"
+        success: Boolean!
+        "Human-readable message for the UI"
+        message: String!
+        "Newly create admin account information"
+        judges: [Judge]
     }
 
     "Administrator account for running a competition"
@@ -111,8 +129,8 @@ export const typeDefs = gql`
     type Heat {
         "Primary key id"
         id: ID!
-        "Records for dontestants participating in the heat"
-        contestantMarks: [ContestantMarks!]!
+        "Records for contestants participating in the heat"
+        contestantRounds: [ContestantRound!]!
     }
 
     "Judge account marking contestants"
@@ -120,7 +138,7 @@ export const typeDefs = gql`
         "Primary key id"
         id: ID!
         "Name of the judge"
-        name: String!
+        username: String!
         "Judge number for reference in case of anonimity"
         number: Int
     }
@@ -131,7 +149,7 @@ export const typeDefs = gql`
         id: ID!
         "Contestants participating in the round"
         contestants: [Contestant]!
-        "NUmber of heats in the round"
+        "Number of heats in the round"
         heats: [Heat!]!
         "Amount each judge is expected to recall for the next round (number they should mark down)"
         cutoff: Int

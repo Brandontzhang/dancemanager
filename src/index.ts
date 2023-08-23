@@ -12,14 +12,15 @@ async function startApolloServer() {
     resolvers,
   });
   const { url } = await startStandaloneServer(server, {
-    context: async () => {
+    context: async ({ req, res }) => {
       const { cache } = server;
       // TODO: Look into caching later (Redis), LoadBalancer
 
       // Occurs on each operation request, add user auth
+      const token = req.headers.authorization || '';
       return {
         dataSources: {
-          db: new PGDBDataSource(),
+          db: new PGDBDataSource(token),
         }
       };
     },

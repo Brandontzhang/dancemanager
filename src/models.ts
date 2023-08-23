@@ -14,3 +14,9 @@ export type AdminModel = {
     username: string,
     email: string
 }
+
+export type JudgeModel = {
+    id: string,
+    username: string,
+    number: number
+}

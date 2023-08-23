@@ -19,6 +19,7 @@
     "bcrypt": "^5.1.1",
     "graphql": "^16.8.0",
     "graphql-tag": "^2.12.6",
+    "jsonwebtoken": "^9.0.1",
     "pg": "^8.11.3"
   },
   "devDependencies": {
