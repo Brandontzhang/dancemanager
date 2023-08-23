@@ -8,3 +8,9 @@ export type CompetitionModel = {
     events: [number],
     eventQueue: [number],
 }
+
+export type AdminModel = {
+    id: string, 
+    username: string,
+    email: string
+}

@@ -14,7 +14,9 @@ async function startApolloServer() {
   const { url } = await startStandaloneServer(server, {
     context: async () => {
       const { cache } = server;
-      // TODO: Look into caching later (Redis)
+      // TODO: Look into caching later (Redis), LoadBalancer
+
+      // Occurs on each operation request, add user auth
       return {
         dataSources: {
           db: new PGDBDataSource(),
